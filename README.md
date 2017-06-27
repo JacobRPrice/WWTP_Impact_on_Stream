@@ -1,9 +1,8 @@
-# WWTP_Impact_on_Stream
+# Wastewater treatment plant effluent introduces recoverable shifts in microbial community composition in receiving streams
 
-# Introduction
+## Introduction
 This repository contains all of the scripts needed to replicate the results and output presented in:   
-
-INSERT CITATION INFORMATION HERE
+INSERT CITATION WHEN COMPLETE
 
 Please read this markdown file, including the NOTES section, in it's entirety before proceeding. 
 
@@ -15,7 +14,12 @@ ___
 Follow the instructions in this section to carry out all of the bioinformatics processes up to and including the creation of the phyloseq object.
 
 Several items are needed before starting: 
-1) Raw reads (see NOTES)
+1) Raw reads (see NOTES)   
+Raw sequencing files are currently hosted on github for reviewers/users convenience. Github may request the removal of this data. Raw sequence reads have been uploaded to the NCBI Sequence Read Archive:   
+* SRA ID: SRP103534   
+* Bioproject ID: PRJNA382371
+Raw sequencing files should be placed within the "./data/rawreads/" directory
+
 2) SILVA files (see NOTES)
 3) mapping file (in data directory)
 All placed in thier correct locations (refer to scripts)
@@ -41,7 +45,7 @@ The scripts for the results section generally follow this order:
 
 ___  
 
-#NOTES:  
+# NOTES:  
 **Change directory paths before starting**   
 Prior to carrying out any replication of results, users should change the file paths found in the scripts, i.e. change "PATH/TO/DIR/" so that R is able to locate data and scripts as they are sourced.   
 
