@@ -7,9 +7,9 @@
 ########
 
 # load utilities and functions
-source("/Users/jprice/Desktop/WWTP_Impact/R/utilities.R",
+source("/PATH/TO/DIR/WWTP_Impact_on_Stream/R/utilities.R",
 	verbose=TRUE,max.deparse.length=Inf)
-source("/Users/jprice/Desktop/WWTP_Impact/R/functions.R",
+source("/PATH/TO/DIR/WWTP_Impact_on_Stream/R/functions.R",
 	verbose=TRUE,max.deparse.length=Inf)
 
 # set temporary directories, if needed
