@@ -60,7 +60,8 @@ ggplot(human, aes(x=SampleID, y=human, fill=as.factor(site))) +
 	theme(axis.title.x=element_blank())+ 
 	theme(axis.title.y=element_text(size=rel(0.9))) + 
 	theme(axis.text.y=element_text(size=rel(0.8))) +
-	theme(axis.text.y=element_text(size=rel(0.9)))
+	theme(axis.text.y=element_text(size=rel(0.9))) +
+	scale_y_log10()
 
 ########
 # qPCR bacteroides spp.
@@ -77,7 +78,8 @@ ggplot(bacter, aes(x=SampleID, y=bacter, fill=as.factor(site))) +
 	theme(axis.title.x=element_blank()) + 
 	theme(axis.title.y=element_text(size=rel(0.9))) + 
 	theme(axis.text.y=element_text(size=rel(0.8))) +
-	theme(axis.text.y=element_text(size=rel(0.9))) 
+	theme(axis.text.y=element_text(size=rel(0.9))) +
+	scale_y_log10()
 
 #----------------------------------------------------------
 ########
@@ -88,9 +90,13 @@ ggplot(bacter, aes(x=SampleID, y=bacter, fill=as.factor(site))) +
 # qPCR - human and bacter 
 ggsave(file.path(figs_path,"qPCR-HS&Bacter.eps"),
 	grid.arrange(nrow=1,
-	qPCR.human + ggtitle("A")
+	qPCR.human + 
+	ggtitle("A") +
+	theme(plot.title=element_text(hjust=0.5))
 	,
-	qPCR.bacter + ggtitle("B")
+	qPCR.bacter + 
+	ggtitle("B") +
+	theme(plot.title=element_text(hjust=0.5))
 	),
 	width=190, height=190/2+5,units="mm")
 
