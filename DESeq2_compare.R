@@ -46,7 +46,7 @@ ggsave(
 	ylab("Relative Abundance") +
 	theme(axis.title.x=element_blank()) +
 	theme(axis.text.y = element_text(angle=90, hjust=0.5)) +
-	theme(axis.text.x = element_text(angle=-90, vjust=0.5)) +
+	theme(axis.text.x = element_text(angle=90, vjust=0.5)) +
 	scale_fill_brewer(palette="Paired")
 	,
 	width=90,height=125,units="mm"
@@ -58,7 +58,7 @@ ggsave(
 	ylab("Relative Abundance") +
 	theme(axis.title.x=element_blank()) +
 	theme(axis.text.y = element_text(angle=90, hjust=0.5)) +
-	theme(axis.text.x = element_text(angle=-90, vjust=0.5)) +
+	theme(axis.text.x = element_text(angle=90, vjust=0.5)) +
 	scale_fill_brewer(palette="Paired")
 	,
 	width=90,height=125,units="mm"

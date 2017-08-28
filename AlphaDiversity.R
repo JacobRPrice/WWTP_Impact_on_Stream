@@ -66,7 +66,10 @@ plot_richness(ps_orig,
 	color="day", 
 	measures=c("observed","Chao1","Shannon")) +
 	theme(legend.position="bottom") + 
-	theme(axis.text.y=element_text(angle=90,hjust=0.5))
+	theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
+  theme(axis.text.x=element_text(angle=90,hjust=0.5)) +
+  xlab("Site") + 
+  labs(color="Day")
 ggsave(file.path(figs_path,"AlphaDiversity.eps"),
 	AlphaDiversity,
 	width=90,height=120,units="mm")
@@ -86,7 +89,10 @@ plot_richness(ps_orig.ind,
 	color="day", 
 	measures=c("observed","Chao1","Shannon")) +
 	theme(legend.position="bottom") + 
-	theme(axis.text.y=element_text(angle=90,hjust=0.5))
+	theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
+  theme(axis.text.x=element_text(angle=90,hjust=0.5)) +
+  xlab("Site") + 
+  labs(color="Day")
 ggsave(file.path(figs_path,"Ind_AlphaDiversity.eps"),
 	AlphaDiversity.i,
 	width=90,height=120,units="mm")

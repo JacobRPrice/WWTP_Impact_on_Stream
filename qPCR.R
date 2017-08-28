@@ -40,65 +40,108 @@ head(bacter)
 bacter<-summarySE(bacter, measurevar="bacter", groupvars=c("SampleID","site"),na.rm=TRUE)
 head(bacter)
 
-#----------------------------------------------------------
 ########
-# create and format individual plots
-########
+# relative abundance - Human-specific bacteroides (B. dorei)
+psra
+psra.human<-subset_taxa(psra, Species %in% c("dorei","dorei/fragilis"))
+psra.human
 
 ########
-# qPCR Human-specific bacteroides (B. dorei)
-qPCR.human<-
-ggplot(human, aes(x=SampleID, y=human, fill=as.factor(site))) +
-	geom_bar(position=position_dodge(), stat="identity") +
-	geom_errorbar(aes(ymin=human-se, ymax=human+se),
-		width=0.2,position=position_dodge(0.9)) +
-	theme_bw() +
-	ylab("B. dorei (Copy Number/100 mL)") +
-	guides(fill=FALSE) +
-	theme(axis.text.x=element_text(angle=270,vjust=0.5,hjust=0)) +
-	theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
-	theme(axis.title.x=element_blank())+ 
-	theme(axis.title.y=element_text(size=rel(0.9))) + 
-	theme(axis.text.y=element_text(size=rel(0.8))) +
-	theme(axis.text.y=element_text(size=rel(0.9))) +
-	scale_y_log10()
-
+# relative abundance - bacteroides spp.
 ########
-# qPCR bacteroides spp.
-qPCR.bacter<-
-ggplot(bacter, aes(x=SampleID, y=bacter, fill=as.factor(site))) +
-	geom_bar(position=position_dodge(), stat="identity") +
-	geom_errorbar(aes(ymin=bacter-se, ymax=bacter+se),
-		width=0.2,position=position_dodge(0.9)) +
-	theme_bw() +
-	ylab("Bacteroides spp. (Copy Number/100 mL)") +
-	guides(fill=FALSE) +
-	theme(axis.text.x=element_text(angle=270,vjust=0.5,hjust=0)) +
-	theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
-	theme(axis.title.x=element_blank()) + 
-	theme(axis.title.y=element_text(size=rel(0.9))) + 
-	theme(axis.text.y=element_text(size=rel(0.8))) +
-	theme(axis.text.y=element_text(size=rel(0.9))) +
-	scale_y_log10()
+psra
+psra.bacter<-subset_taxa(psra,Genus=="Bacteroides")
+psra.bacter
+psra.bacter.glom<-tax_glom(psra.bacter,taxrank="Species",NArm=FALSE)
+psra.bacter.glom
+psra.bacter.glom.t<-psra.bacter.glom
+tax_table(psra.bacter.glom.t)[,7]<-sub("/","/ \n",tax_table(psra.bacter.glom.t)[,7])
 
 #----------------------------------------------------------
 ########
-# make and save plots
+# plot qPCR and relative abundance together
 ########
 
-########
-# qPCR - human and bacter 
-ggsave(file.path(figs_path,"qPCR-HS&Bacter.eps"),
-	grid.arrange(nrow=1,
-	qPCR.human + 
-	ggtitle("A") +
-	theme(plot.title=element_text(hjust=0.5))
-	,
-	qPCR.bacter + 
-	ggtitle("B") +
-	theme(plot.title=element_text(hjust=0.5))
+ggsave(
+	file.path(figs_path,"qPCR-&-Bact-&-Bdorei.eps"),
+	grid.arrange(
+		nrow=2,
+		ggplot(human, aes(x=SampleID, y=human, fill=as.factor(site))) +
+			geom_bar(position=position_dodge(), stat="identity") +
+			geom_errorbar(aes(ymin=human-se, ymax=human+se),
+										width=0.2,position=position_dodge(0.9)) +
+			theme_bw() +
+			ylab("B. dorei (Copy Number/100 mL)") +
+			guides(fill=FALSE) +
+			theme(axis.text.x=element_text(angle=90,vjust=0.5,hjust=0)) +
+			theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
+			theme(axis.title.x=element_blank())+ 
+			theme(axis.title.y=element_text(size=rel(0.9))) + 
+			theme(axis.text.y=element_text(size=rel(0.9))) +
+			scale_y_log10() + 
+			ggtitle("A") +
+			theme(plot.title=element_text(hjust=0.5))
+		,
+		ggplot(bacter, aes(x=SampleID, y=bacter, fill=as.factor(site))) +
+			geom_bar(position=position_dodge(), stat="identity") +
+			geom_errorbar(aes(ymin=bacter-se, ymax=bacter+se),
+										width=0.2,position=position_dodge(0.9)) +
+			theme_bw() +
+			ylab("Bacteroides spp. (Copy Number/100 mL)") +
+			guides(fill=FALSE) +
+			theme(axis.text.x=element_text(angle=90,vjust=0.5,hjust=0)) +
+			theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
+			theme(axis.title.x=element_blank()) + 
+			theme(axis.title.y=element_text(size=rel(0.9))) + 
+			theme(axis.text.y=element_text(size=rel(0.9))) +
+			scale_y_log10() + 
+			ggtitle("B") +
+			theme(plot.title=element_text(hjust=0.5))
+		,
+		plot_bar(psra.human, 
+						 x="SampleID", fill="Species") +
+			ylab("B. dorei (Rel. Abund.)") +
+			theme(legend.position="bottom") +
+			theme(axis.title.x=element_blank()) +
+			theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
+			theme(axis.text.x=element_text(angle=-90,vjust=0.5)) +
+			theme(legend.title=element_blank()) + 
+			theme(axis.title.y=element_text(size=rel(0.9))) +
+			theme(axis.text.y=element_text(size=rel(0.9))) +
+			#theme(axis.text.x=element_text(size=rel(0.9))) +
+			theme(axis.text.x=element_blank()) +
+			guides(fill=guide_legend(nrow=6)) +
+			#theme(legend.text=element_text(size=rel(0.75))) +
+			theme(legend.text=element_text(size=9)) +
+			theme(legend.key.width=unit(0.45,"cm")) +
+			theme(legend.key.height=unit(0.46,"cm")) +
+			ggtitle("C") +
+			theme(plot.title=element_text(hjust=0.5))
+		,
+		plot_bar(psra.bacter.glom.t, 
+						 x="SampleID", fill="Species") +
+			ylab("Bacteroides spp. (Rel. Abund.)") +
+			theme(legend.position="bottom") +
+			theme(axis.title.x=element_blank()) +
+			theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
+			theme(axis.text.x=element_text(angle=-90,vjust=0.5)) +
+			theme(legend.title=element_blank()) + 
+			theme(axis.title.y=element_text(size=rel(0.9))) +
+			theme(axis.text.y=element_text(size=rel(0.9))) +
+			#theme(axis.text.x=element_text(size=rel(0.9))) +
+			theme(axis.text.x=element_blank()) +
+			guides(fill=guide_legend(nrow=6)) +
+			#theme(legend.text=element_text(size=rel(0.75))) +
+			theme(legend.text=element_text(size=9)) +
+			theme(legend.key.width=unit(0.45,"cm")) +
+			theme(legend.key.height=unit(0.46,"cm")) +
+			ggtitle("D") +
+			theme(plot.title=element_text(hjust=0.5))
 	),
-	width=190, height=190/2+5,units="mm")
+	width=190,
+	height=240,
+	units="mm"
+	)
 
 #----------------------------------------------------------
 ########

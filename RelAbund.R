@@ -27,17 +27,8 @@ set.seed(20141004)
 psra
 psra.mergeP<-tax_glom(psra,taxrank="Phylum",NArm=FALSE)
 psra.mergeP
-
 psra.mergeP.top<-prune_taxa(taxa_sums(psra.mergeP)>.006*12,psra.mergeP)
-Phylum.RA<-
-plot_bar(
-	psra.mergeP.top,
-	x="SampleID", 
-	fill="Phylum") +
-	theme(legend.position="bottom") +
-	theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
-	theme(axis.title.x=element_blank()) +
-	ylab("Top Phyla (Rel. Abund.)")
+psra.mergeP.top
 
 #----------------------------------------------------------
 ########
@@ -50,15 +41,6 @@ targOrd<-c("Bacteroidales","Bifidobacteriales","Clostridiales")
 psra
 ps.ind<-subset_taxa(psra, Order %in% targOrd)
 ps.ind
-Ind_Order.RA<-
-plot_bar(
-	tax_glom(ps.ind,taxrank="Order",NArm=FALSE),
-	x="SampleID",
-	fill="Order") +
-	theme(legend.position="bottom") +
-	theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
-	theme(axis.title.x=element_blank()) +
-	ylab("Indicator Orders (Rel. Abund.)")
 
 #----------------------------------------------------------
 ########
@@ -70,10 +52,10 @@ ggsave(file.path(figs_path,"TopLevelRelAbund.f.eps"),
 		x="SampleID", fill="Phylum") +
 		theme(legend.position="bottom") +
 		theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
-		theme(axis.text.x=element_text(angle=-90,vjust=0.5)) +
+		theme(axis.text.x=element_text(angle=90,vjust=0.5)) +
 		theme(axis.title.x=element_blank()) +
 		ylab("Top Phyla (Rel. Abund.)") +
-		theme(legend.margin=unit(0,"cm")) + 
+		#theme(legend.margin=unit(0,"cm")) + 
 		theme(axis.title.y=element_text(size=rel(0.8))) + 
 		theme(axis.text.y=element_text(size=rel(0.8))) +
 		theme(axis.text.x=element_text(size=rel(0.8),vjust=0.5)) +
@@ -91,10 +73,10 @@ ggsave(file.path(figs_path,"TopLevelRelAbund.i.eps"),
 		x="SampleID", fill="Order") +
 		theme(legend.position="bottom") +
 		theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
-		theme(axis.text.x=element_text(angle=-90,vjust=0.5)) +
+		theme(axis.text.x=element_text(angle=90,vjust=0.5)) +
 		theme(axis.title.x=element_blank()) +
 		ylab("Top Orders (Rel. Abund.)") +
-		theme(legend.margin=unit(0,"cm")) + 
+		#theme(legend.margin=unit(0,"cm")) + 
 		theme(axis.title.y=element_text(size=rel(0.8))) + 
 		theme(axis.text.y=element_text(size=rel(0.8))) +
 		theme(axis.text.x=element_text(size=rel(0.8),vjust=0.5)) +
@@ -104,90 +86,6 @@ ggsave(file.path(figs_path,"TopLevelRelAbund.i.eps"),
 	,
 	width=90,
 	height=120,
-	units="mm"
-)
-
-#----------------------------------------------------------
-#----------------------------------------------------------
-#----------------------------------------------------------
-#----------------------------------------------------------
-#----------------------------------------------------------
-########
-# relative abundance - Human-specific bacteroides (B. dorei)
-########
-psra
-psra.human<-subset_taxa(psra, Species %in% c("dorei","dorei/fragilis"))
-psra.human
-
-ra.human<-
-plot_bar(psra.human,"SampleID",fill="Species") +
-	ylab("B. dorei (Rel. Abund.)") +
-	theme(legend.position="bottom") +
-	theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
-	theme(axis.title.x=element_blank()) +
-	theme(legend.text=element_text(size=7))
-
-#----------------------------------------------------------
-########
-# relative abundance - bacteroides spp.
-########
-
-psra
-psra.bacter<-subset_taxa(psra,Genus=="Bacteroides")
-psra.bacter
-psra.bacter.glom<-tax_glom(psra.bacter,taxrank="Species",NArm=FALSE)
-psra.bacter.glom
-
-ra.bacter<-
-plot_bar(psra.bacter.glom,"SampleID",fill="Species") +
-	ylab("Bacteroides spp. (Rel. Abund.)") +
-	theme(legend.position="bottom") +
-	theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
-	theme(axis.title.x=element_blank()) +
-	theme(legend.text=element_text(size=7))
-
-psra.bacter.glom.t<-psra.bacter.glom
-tax_table(psra.bacter.glom.t)[,7]<-sub("/","/ \n",tax_table(psra.bacter.glom.t)[,7])
-ra.bacter.t<-
-plot_bar(psra.bacter.glom.t,"SampleID",fill="Species") +
-	ylab("Bacteroides spp. (Rel. Abund.)") +
-	theme(legend.position="bottom") +
-	theme(axis.text.y=element_text(angle=90,hjust=0.5)) +
-	theme(axis.title.x=element_blank()) +
-	theme(legend.text=element_text(size=7))
-
-#----------------------------------------------------------
-########
-# plot relative abundance of B. dorei and Bacteroides
-########
-
-ggsave(file.path(figs_path,"RelAbund-B.dorei_Bacter.eps"),
-	grid.arrange(nrow=2,
-	ra.human + 
-		theme(legend.margin=unit(0,"cm")) +
-		theme(legend.title=element_blank()) +
-		theme(axis.title.y=element_text(size=rel(0.9))) +
-		theme(axis.text.y=element_text(size=rel(0.8))) +
-		theme(axis.text.x=element_text(size=rel(0.9))) +
- 		theme(legend.position="bottom")  + 
-		theme(legend.key.width=unit(0.45,"cm")) +
-		theme(legend.key.height=unit(0.46,"cm")) + ggtitle("A")
-		,
-	ra.bacter.t + 
-		theme(legend.margin=unit(0,"cm")) + 
-		theme(axis.title.y=element_text(size=rel(0.9))) +
-		theme(axis.text.y=element_text(size=rel(0.8))) +
-		theme(axis.text.x=element_text(size=rel(0.9))) +
-		theme(legend.title=element_blank()) + 
-		guides(fill=guide_legend(nrow=6)) + 
-  		theme(legend.position="bottom") +
-		theme(legend.key.width=unit(0.45,"cm")) +
-		theme(legend.key.height=unit(0.46,"cm")) + ggtitle("B")
-
-	)
-	, 
-	width=90,
-	height=200,
 	units="mm"
 )
 
