@@ -3,9 +3,7 @@
 ## Introduction
 This repository contains all of the scripts needed to replicate the results and output presented in:   
 
-**Wastewater treatment plant effluent introduces recoverable shifts in microbial community composition in receiving streams**   
-Jacob R. Price, Sarah H. Ledford, Michael O. Ryan, Laura Toran, and Christopher M. Sales    
-[Submitted June 27, 2017]  
+Price, J.R., Ledford, S.H., Ryan, M.O., Toran, L., and C.M. Sales. 2017. [Wastewater treatment plant effluent introduces recoverable shifts in microbial community composition in receiving streams.](http://www.sciencedirect.com/science/article/pii/S0048969717325111)  Sci. Total Environ. doi:10.1016/j.scitotenv.2017.09.162.  
 
 Please read this markdown file in it's entirety before proceeding. 
 
